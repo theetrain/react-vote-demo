@@ -49,7 +49,10 @@ h1 {
 .flex-row {
   display: flex;
   flex-direction: row;
-  gap: 1em;
+  gap: var(--gap, 1em);
+}
+.flex-wrap {
+  flex-wrap: wrap;
 }
 .align-self-center {
   align-self: center;

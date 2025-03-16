@@ -1,40 +1,38 @@
-import { useState, createContext, useContext } from 'react'
+import { useState } from 'react'
 import { Button } from './Button'
 import { UpVote } from './UpVote'
 import classes from './vote-container.module.css'
 import addIcon from '../assets/add.svg?inline'
 
-interface VoteContainerProps {
-  children?: React.ReactNode
-}
+const voteGroup = crypto.randomUUID()
 
-const VoteContext = createContext<any>(null)
+type Vote = Array<{ voteState: number; key: string }>
 
-export function VoteContainer({ children }: VoteContainerProps) {
-  const [votes, setVotes] = useState<React.ReactNode[]>([])
+export function VoteContainer() {
+  const [votes, setVotes] = useState<Vote>([])
 
   const addVote = () => {
-    setVotes([...votes, <UpVote key={votes.length} />])
+    const key = crypto.randomUUID()
+    setVotes([...votes, { voteState: 0, key }])
   }
+  console.log('hello')
 
   return (
-    <VoteContext.Provider value={{ addVote }}>
-      <div className="flex-row">
-        <div className={classes.container}>
-          {children}
-          {votes}
-        </div>
-        <Button
-          svg={addIcon}
-          label="Add Vote"
-          onClick={addVote}
-          className="align-self-center"
-        />
+    <div className="flex-row">
+      <div
+        style={{ '--gap': '6px' }}
+        className={classes.container + ' flex-row'}
+      >
+        {votes.map(({ voteState, key }) => (
+          <UpVote key={key} voteState={voteState} />
+        ))}
       </div>
-    </VoteContext.Provider>
+      <Button
+        svg={addIcon}
+        label="Add Vote"
+        onClick={addVote}
+        className="align-self-center"
+      />
+    </div>
   )
-}
-
-export function useVoteContext() {
-  return useContext(VoteContext)
 }

@@ -1,6 +1,7 @@
 import classes from './button.module.css'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   svg: string
   label: string
   className?: string
