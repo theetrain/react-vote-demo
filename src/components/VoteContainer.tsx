@@ -2,11 +2,12 @@ import { Button } from './Button'
 import { UpVote } from './UpVote'
 import classes from './vote-container.module.css'
 import addIcon from '../assets/add.svg?inline'
+import { Vote } from '../types'
 
-interface VoteContainerProps {
-  votes: Array<{ voteState: number; key: string }>
+export interface VoteContainerProps {
+  votes: Vote[]
   onAddVote: () => void
-  onVote: (key: string, voteState: number) => void
+  onVote: (vote: Vote) => void
 }
 
 export function VoteContainer({
@@ -24,7 +25,7 @@ export function VoteContainer({
           <UpVote
             key={key}
             voteState={voteState}
-            onClick={() => onVote(key, voteState)}
+            onClick={() => onVote({ key, voteState })}
           />
         ))}
       </div>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { VoteContainer } from './components/VoteContainer'
+import { Vote } from './types'
 
-type Vote = Array<{ voteState: number; key: string }>
 const voteGroups = ['group1', 'group2', 'group3']
 
 function App() {
-  const [votesMap, setVotesMap] = useState<Record<string, Vote>>({})
+  const [votesMap, setVotesMap] = useState<Record<string, Vote[]>>({})
 
   useEffect(() => {
-    const loadedVotes: Record<string, Vote> = {}
+    const loadedVotes: Record<string, Vote[]> = {}
     voteGroups.forEach((group) => {
       const votes = localStorage.getItem(group)
       if (votes) {
