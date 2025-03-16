@@ -1,8 +1,8 @@
 .default {
-  color: #f4f6f8;
-  fill: #343a40;
+  background-color: #f4f6f8;
+  color: #343a40;
 }
 .upvoted {
-  color: #e5e8fd;
-  fill: #253cf2;
+  background-color: #e5e8fd;
+  color: #253cf2;
 }

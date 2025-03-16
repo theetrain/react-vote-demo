@@ -25,8 +25,17 @@ function App() {
     setVotesMap({ ...votesMap, [group]: newVotes })
   }
 
-  function vote() {
-    // TODO
+  function toggleVote(group: string, { key, voteState }: Vote) {
+    console.log('toggling vote')
+    const newVotes = structuredClone(votesMap)
+
+    const voteIndex = newVotes[group].findIndex((vote) => vote.key === key)
+    newVotes[group][voteIndex].voteState = voteState === 0 ? 1 : 0
+
+    Object.entries(newVotes).forEach(([group, votes]) => {
+      localStorage.setItem(group, JSON.stringify(votes))
+    })
+    setVotesMap(newVotes)
   }
 
   function clearVotes() {
@@ -43,7 +52,7 @@ function App() {
           key={group}
           votes={votesMap[group] || []}
           onAddVote={() => addVote(group)}
-          onVote={vote}
+          onVote={(vote) => toggleVote(group, vote)}
         />
       ))}
       <button onClick={clearVotes}>Clear all votes</button>

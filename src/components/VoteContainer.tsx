@@ -1,7 +1,7 @@
 import { Button } from './Button'
 import { UpVote } from './UpVote'
 import classes from './vote-container.module.css'
-import addIcon from '../assets/add.svg?inline'
+import addIcon from '../assets/add.svg?raw'
 import { Vote } from '../types'
 
 export interface VoteContainerProps {
