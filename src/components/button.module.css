@@ -1,0 +1,18 @@
+.btn {
+  background-color: #eeeeee;
+  border: 1px solid #000;
+  border-radius: 5px;
+  aspect-ratio: 1;
+  line-height: 0;
+  padding: 4px;
+}
+.btn:hover {
+  box-shadow: inset 0 0 3px 0 #000;
+}
+.btn:active {
+  background-color: #fff;
+}
+.btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
