@@ -9,5 +9,12 @@ interface UpVoteProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export function UpVote({ voteState, ...rest }: UpVoteProps) {
   const label = voteState === 1 ? 'Upvoted' : 'Upvote'
 
-  return <Button className={voteState === 1 ? classes.upvoted : classes.default} {...rest} svg={arrowUp} label={label}></Button>
+  return (
+    <Button
+      className={voteState === 1 ? classes.upvoted : classes.default}
+      {...rest}
+      svg={arrowUp}
+      label={label}
+    ></Button>
+  )
 }

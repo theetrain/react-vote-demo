@@ -1,36 +1,37 @@
-import { useState } from 'react'
 import { Button } from './Button'
 import { UpVote } from './UpVote'
 import classes from './vote-container.module.css'
 import addIcon from '../assets/add.svg?inline'
 
-const voteGroup = crypto.randomUUID()
+interface VoteContainerProps {
+  votes: Array<{ voteState: number; key: string }>
+  onAddVote: () => void
+  onVote: (key: string, voteState: number) => void
+}
 
-type Vote = Array<{ voteState: number; key: string }>
-
-export function VoteContainer() {
-  const [votes, setVotes] = useState<Vote>([])
-
-  const addVote = () => {
-    const key = crypto.randomUUID()
-    setVotes([...votes, { voteState: 0, key }])
-  }
-  console.log('hello')
-
+export function VoteContainer({
+  votes,
+  onAddVote,
+  onVote,
+}: VoteContainerProps) {
   return (
     <div className="flex-row">
       <div
         style={{ '--gap': '6px' }}
         className={classes.container + ' flex-row flex-wrap'}
       >
-        {votes.map(({ voteState, key }) => (
-          <UpVote key={key} voteState={voteState} />
+        {votes.map(({ key, voteState }) => (
+          <UpVote
+            key={key}
+            voteState={voteState}
+            onClick={() => onVote(key, voteState)}
+          />
         ))}
       </div>
       <Button
         svg={addIcon}
         label="Add Vote"
-        onClick={addVote}
+        onClick={onAddVote}
         className="align-self-center"
       />
     </div>
