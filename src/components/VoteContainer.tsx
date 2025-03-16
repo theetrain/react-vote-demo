@@ -21,7 +21,7 @@ export function VoteContainer() {
     <div className="flex-row">
       <div
         style={{ '--gap': '6px' }}
-        className={classes.container + ' flex-row'}
+        className={classes.container + ' flex-row flex-wrap'}
       >
         {votes.map(({ voteState, key }) => (
           <UpVote key={key} voteState={voteState} />

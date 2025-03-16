@@ -4,7 +4,6 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   svg: string
   label: string
-  className?: string
 }
 
 export function Button({ svg, label, className, ...rest }: ButtonProps) {
