@@ -3,6 +3,8 @@ import { Button } from './Button'
 import arrowUp from '../assets/arrow-up.svg?raw'
 import check from '../assets/check.svg?raw'
 import classes from './upvote.module.css'
+import { useState } from 'react'
+import { useVoteActions } from '../hooks/useVoteActions'
 
 interface UpVoteProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Parent group ID */
@@ -11,10 +13,18 @@ interface UpVoteProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   voteState: number
   /** Unique vote ID */
   voteId: string
+  toggleVote: ReturnType<typeof useVoteActions>['toggleVote']
 }
 
-export function UpVote({ groupId, voteId, voteState, ...rest }: UpVoteProps) {
-  const upvoted = voteState === 1
+export function UpVote({
+  groupId,
+  voteId,
+  voteState,
+  toggleVote,
+  ...rest
+}: UpVoteProps) {
+  const [vote, setVote] = useState(voteState)
+  const upvoted = vote === 1
   const label = upvoted ? 'Upvoted' : 'Upvote'
 
   return (
@@ -24,6 +34,10 @@ export function UpVote({ groupId, voteId, voteState, ...rest }: UpVoteProps) {
       {...rest}
       svg={arrowUp}
       label={label}
+      onClick={() => {
+        const newVote = toggleVote(groupId, { id: voteId, voteState: vote })
+        setVote(newVote)
+      }}
     >
       {upvoted && (
         <span

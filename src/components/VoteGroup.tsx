@@ -7,6 +7,7 @@ import addIcon from '../assets/add.svg?raw'
 import { useVoteActions } from '../hooks/useVoteActions'
 
 import type { VoteGroup } from '../types'
+import { useState } from 'react'
 
 type Actions = {
   addVote: ReturnType<typeof useVoteActions>['addVote']
@@ -19,6 +20,13 @@ interface VoteGroupProps {
 }
 
 export function VoteGroup({ group, actions }: VoteGroupProps) {
+  const [votes, setVotes] = useState(group.votes)
+
+  function addVote() {
+    const votes = actions.addVote(group.id)
+    setVotes(votes)
+  }
+
   if (!group.votes) {
     return <div>No votes available for this group.</div>
   }
@@ -31,20 +39,18 @@ export function VoteGroup({ group, actions }: VoteGroupProps) {
           <Button
             svg={addIcon}
             label="Add Vote"
-            onClick={() => actions.addVote(group.id)}
+            onClick={addVote}
             className={`align-self-start ${buttonClasses.addButton}`}
           />
         }
       >
-        {group.votes.map(({ id: voteId, voteState }) => (
+        {votes.map(({ id: voteId, voteState }) => (
           <UpVote
             key={voteId}
             voteId={voteId}
             voteState={voteState}
             groupId={group.id}
-            onClick={() =>
-              actions.toggleVote(group.id, { id: voteId, voteState })
-            }
+            toggleVote={actions.toggleVote}
           />
         ))}
       </VoteContainer>

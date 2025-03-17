@@ -27,20 +27,21 @@ export const useVoteActions = () => {
   }, [])
 
   const addVote = useCallback((groupId: string) => {
-    setVotesMap((prevVotesMap) => {
-      const id = crypto.randomUUID()
-      const groupIndex = prevVotesMap.findIndex((group) => group.id === groupId)
+    const id = crypto.randomUUID()
 
-      const newVotes: VoteGroup['votes'] = [
-        ...prevVotesMap[groupIndex].votes,
-        { voteState: 0, id },
-      ]
-      const newMap: VoteGroup[] = [...prevVotesMap]
-      newMap[groupIndex] = { ...prevVotesMap[groupIndex], votes: newVotes }
+    const newVotesMap: VoteGroup[] = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) ?? '{}'
+    )
+    const groupIndex = newVotesMap.findIndex((group) => group.id === groupId)
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newMap))
-      return newMap
-    })
+    const newVotes: VoteGroup['votes'] = [
+      ...newVotesMap[groupIndex].votes,
+      { voteState: 0, id },
+    ]
+    newVotesMap[groupIndex] = { ...newVotesMap[groupIndex], votes: newVotes }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVotesMap))
+    return newVotes
   }, [])
 
   const toggleVote = useCallback(
@@ -48,21 +49,20 @@ export const useVoteActions = () => {
       groupId: VoteGroup['id'],
       { id, voteState }: VoteGroup['votes'][number]
     ) => {
-      setVotesMap((prevVotesMap) => {
-        const newVotesMap = structuredClone(prevVotesMap)
+      const newVotesMap: VoteGroup[] = JSON.parse(
+        localStorage.getItem(STORAGE_KEY) ?? '{}'
+      )
 
-        const groupIndex = newVotesMap.findIndex(
-          (group) => group.id === groupId
-        )
-        const voteIndex = newVotesMap[groupIndex].votes.findIndex(
-          (vote) => vote.id === id
-        )
-        newVotesMap[groupIndex].votes[voteIndex].voteState =
-          voteState === 0 ? 1 : 0
+      const groupIndex = newVotesMap.findIndex((group) => group.id === groupId)
+      const voteIndex = newVotesMap[groupIndex].votes.findIndex(
+        (vote) => vote.id === id
+      )
 
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newVotesMap))
-        return newVotesMap
-      })
+      const newVote = voteState === 0 ? 1 : 0
+      newVotesMap[groupIndex].votes[voteIndex].voteState = newVote
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newVotesMap))
+      return newVote
     },
     []
   )
