@@ -14,7 +14,10 @@ function App() {
         Add votes to a vote group, and then click on a vote to toggle an upvote.
       </p>
       {Object.keys(votesMap).map((group) => (
-        <VoteGroup key={group} group={group} />
+        <>
+          <h2>{group}</h2>
+          <VoteGroup key={group} group={group} />
+        </>
       ))}
       <button onClick={clearVotes}>Clear all votes</button>
     </div>

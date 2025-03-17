@@ -16,7 +16,7 @@ export function VoteGroup({ group }: VoteGroupProps) {
   }
 
   return (
-    <>
+    <div className="flex-row">
       <VoteContainer key={group}>
         {votesMap[group].map(({ key }) => (
           <UpVote
@@ -31,6 +31,6 @@ export function VoteGroup({ group }: VoteGroupProps) {
         onClick={() => addVote(group)}
         className="align-self-center"
       />
-    </>
+    </div>
   )
 }
