@@ -2,9 +2,10 @@ import classes from './vote-container.module.css'
 
 export interface VoteContainerProps {
   children: React.ReactNode
+  actionButton: React.ReactNode
 }
 
-export function VoteContainer({ children }: VoteContainerProps) {
+export function VoteContainer({ children, actionButton }: VoteContainerProps) {
   return (
     <div className="flex-row">
       <div
@@ -13,6 +14,7 @@ export function VoteContainer({ children }: VoteContainerProps) {
       >
         {children}
       </div>
+      {actionButton}
     </div>
   )
 }

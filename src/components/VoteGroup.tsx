@@ -1,8 +1,11 @@
 import { VoteContainer } from './VoteContainer'
 import { UpVote } from './UpVote'
 import { Button } from './Button'
+
+import buttonClasses from './button.module.css'
 import addIcon from '../assets/add.svg?raw'
 import { useVoteActions } from '../hooks/useVoteActions'
+
 import type { VoteGroup } from '../types'
 
 type Actions = {
@@ -21,10 +24,21 @@ export function VoteGroup({ group, actions }: VoteGroupProps) {
   }
 
   return (
-    <div className="flex-row">
-      <VoteContainer key={group.id}>
+    <>
+      <VoteContainer
+        key={group.id}
+        actionButton={
+          <Button
+            svg={addIcon}
+            label="Add Vote"
+            onClick={() => actions.addVote(group.id)}
+            className={`align-self-start ${buttonClasses.addButton}`}
+          />
+        }
+      >
         {group.votes.map(({ id: voteId, voteState }) => (
           <UpVote
+            key={voteId}
             voteId={voteId}
             voteState={voteState}
             groupId={group.id}
@@ -34,12 +48,6 @@ export function VoteGroup({ group, actions }: VoteGroupProps) {
           />
         ))}
       </VoteContainer>
-      <Button
-        svg={addIcon}
-        label="Add Vote"
-        onClick={() => actions.addVote(group.id)}
-        className="align-self-center"
-      />
-    </div>
+    </>
   )
 }

@@ -25,6 +25,7 @@
   justify-content: center;
 }
 .app {
+  width: 100%;
   max-width: 500px;
   margin: auto;
 }
@@ -92,6 +93,9 @@ h1 {
 }
 .align-self-center {
   align-self: center;
+}
+.align-self-start {
+  align-self: flex-start;
 }
 .visually-hidden {
   position: absolute;
