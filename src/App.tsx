@@ -5,7 +5,7 @@ import { useVoteActions } from './hooks/useVoteActions'
 scan({ enabled: import.meta.env.DEV })
 
 function App() {
-  const { votesMap, clearVotes } = useVoteActions()
+  const { votesMap, clearVotes, addVote, toggleVote } = useVoteActions()
 
   return (
     <div className="flex-col app">
@@ -13,11 +13,11 @@ function App() {
       <p>
         Add votes to a vote group, and then click on a vote to toggle an upvote.
       </p>
-      {Object.keys(votesMap).map((group) => (
-        <>
-          <h2>{group}</h2>
-          <VoteGroup key={group} group={group} />
-        </>
+      {votesMap.map((group) => (
+        <div key={`${group.id}-${JSON.stringify(group.votes)}`}>
+          <h2>{group.label}</h2>
+          <VoteGroup group={group} actions={{ addVote, toggleVote }} />
+        </div>
       ))}
       <button onClick={clearVotes}>Clear all votes</button>
     </div>

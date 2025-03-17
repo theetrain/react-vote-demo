@@ -1,58 +1,75 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Vote } from '../types'
+import { VoteGroup } from '../types'
 
-const voteGroups = ['group1', 'group2', 'group3']
+const initialVoteGroups: VoteGroup[] = [
+  { label: 'Group 1', id: crypto.randomUUID(), votes: [] },
+  { label: 'Group 2', id: crypto.randomUUID(), votes: [] },
+  { label: 'Group 3', id: crypto.randomUUID(), votes: [] },
+]
+
+const STORAGE_KEY = 'votesMap'
 
 export const useVoteActions = () => {
   /**
    * Large object containing all vote groups and their
    * respective votes. This object is stored in local storage.
    */
-  const [votesMap, setVotesMap] = useState<Record<string, Vote[]>>({})
+  const [votesMap, setVotesMap] = useState<VoteGroup[]>([])
 
   useEffect(() => {
-    const loadedVotes: Record<string, Vote[]> = {}
-    voteGroups.forEach((group) => {
-      const votes = localStorage.getItem(group)
-      if (votes) {
-        loadedVotes[group] = JSON.parse(votes)
-      } else {
-        loadedVotes[group] = []
-      }
-    })
-    setVotesMap(loadedVotes)
+    const votes = localStorage.getItem(STORAGE_KEY)
+    if (votes) {
+      setVotesMap(JSON.parse(votes))
+      return
+    } else {
+      setVotesMap(initialVoteGroups)
+    }
   }, [])
 
-  const addVote = useCallback((group: string) => {
-    const key = crypto.randomUUID()
+  const addVote = useCallback((groupId: string) => {
     setVotesMap((prevVotesMap) => {
-      const newVotes = [...(prevVotesMap[group] || []), { voteState: 0, key }]
-      localStorage.setItem(group, JSON.stringify(newVotes))
-      return { ...prevVotesMap, [group]: newVotes }
+      const id = crypto.randomUUID()
+      const groupIndex = prevVotesMap.findIndex((group) => group.id === groupId)
+
+      const newVotes: VoteGroup['votes'] = [
+        ...prevVotesMap[groupIndex].votes,
+        { voteState: 0, id },
+      ]
+      const newMap: VoteGroup[] = [...prevVotesMap]
+      newMap[groupIndex] = { ...prevVotesMap[groupIndex], votes: newVotes }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newMap))
+      return newMap
     })
   }, [])
 
-  const toggleVote = useCallback((group: string, { key, voteState }: Vote) => {
-    setVotesMap((prevVotesMap) => {
-      const newVotesMap = { ...prevVotesMap }
-      const groupVotes = newVotesMap[group] ? [...newVotesMap[group]] : []
-      const voteIndex = groupVotes.findIndex((vote) => vote.key === key)
+  const toggleVote = useCallback(
+    (
+      groupId: VoteGroup['id'],
+      { id, voteState }: VoteGroup['votes'][number]
+    ) => {
+      setVotesMap((prevVotesMap) => {
+        const newVotesMap = structuredClone(prevVotesMap)
 
-      if (voteIndex !== -1) {
-        groupVotes[voteIndex] = {
-          ...groupVotes[voteIndex],
-          voteState: voteState === 0 ? 1 : 0,
-        }
-        localStorage.setItem(group, JSON.stringify(groupVotes))
-        return { ...newVotesMap, [group]: groupVotes }
-      }
-      return prevVotesMap
-    })
-  }, [])
+        const groupIndex = newVotesMap.findIndex(
+          (group) => group.id === groupId
+        )
+        const voteIndex = newVotesMap[groupIndex].votes.findIndex(
+          (vote) => vote.id === id
+        )
+        newVotesMap[groupIndex].votes[voteIndex].voteState =
+          voteState === 0 ? 1 : 0
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newVotesMap))
+        return newVotesMap
+      })
+    },
+    []
+  )
 
   const clearVotes = useCallback(() => {
-    voteGroups.forEach((group) => localStorage.removeItem(group))
-    setVotesMap({ group1: [], group2: [], group3: [] })
+    setVotesMap(initialVoteGroups)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(initialVoteGroups))
   }, [])
 
   return { votesMap, addVote, toggleVote, clearVotes }

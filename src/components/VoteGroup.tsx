@@ -3,32 +3,41 @@ import { UpVote } from './UpVote'
 import { Button } from './Button'
 import addIcon from '../assets/add.svg?raw'
 import { useVoteActions } from '../hooks/useVoteActions'
+import type { VoteGroup } from '../types'
 
-interface VoteGroupProps {
-  group: string
+type Actions = {
+  addVote: ReturnType<typeof useVoteActions>['addVote']
+  toggleVote: ReturnType<typeof useVoteActions>['toggleVote']
 }
 
-export function VoteGroup({ group }: VoteGroupProps) {
-  const { addVote, votesMap } = useVoteActions()
+interface VoteGroupProps {
+  group: VoteGroup
+  actions: Actions
+}
 
-  if (!votesMap[group]) {
+export function VoteGroup({ group, actions }: VoteGroupProps) {
+  if (!group.votes) {
     return <div>No votes available for this group.</div>
   }
 
   return (
     <div className="flex-row">
-      <VoteContainer key={group}>
-        {votesMap[group].map(({ key }) => (
+      <VoteContainer key={group.id}>
+        {group.votes.map(({ id: voteId, voteState }) => (
           <UpVote
-            voteKey={key}
-            group={group} // Pass the group prop
+            voteId={voteId}
+            voteState={voteState}
+            groupId={group.id}
+            onClick={() =>
+              actions.toggleVote(group.id, { id: voteId, voteState })
+            }
           />
         ))}
       </VoteContainer>
       <Button
         svg={addIcon}
         label="Add Vote"
-        onClick={() => addVote(group)}
+        onClick={() => actions.addVote(group.id)}
         className="align-self-center"
       />
     </div>
