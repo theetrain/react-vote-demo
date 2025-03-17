@@ -1,8 +1,8 @@
 .default {
-  background-color: #f4f6f8;
-  color: #343a40;
+  background-color: var(--color-background-default);
+  color: var(--color-text-default);
 }
 .upvoted {
-  background-color: #e5e8fd;
-  color: #253cf2;
+  background-color: var(--color-background-upvoted);
+  color: var(--color-text-upvoted);
 }

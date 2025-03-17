@@ -11,6 +11,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-background-default: #f4f6f8;
+  --color-text-default: #343a40;
+  --color-background-upvoted: #e5e8fd;
+  --color-text-upvoted: #253cf2;
+  --color-border: #000;
 }
 
 #root {
@@ -58,6 +64,15 @@ h1 {
   }
   a:hover {
     color: #747bff;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background-default: #101010;
+    --color-text-default: #aec1d4;
+    --color-background-upvoted: #0b1730;
+    --color-text-upvoted: #c6cbf6;
+    --color-border: #fff;
   }
 }
 
