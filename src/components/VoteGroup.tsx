@@ -18,10 +18,9 @@ export function VoteGroup({ group }: VoteGroupProps) {
   return (
     <>
       <VoteContainer key={group}>
-        {votesMap[group].map(({ key, voteState }) => (
+        {votesMap[group].map(({ key }) => (
           <UpVote
-            key={key}
-            voteState={voteState}
+            voteKey={key}
             group={group} // Pass the group prop
           />
         ))}

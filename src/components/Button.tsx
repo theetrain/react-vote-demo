@@ -6,11 +6,18 @@ export interface ButtonProps
   label: string
 }
 
-export function Button({ svg, label, className, ...rest }: ButtonProps) {
+export function Button({
+  svg,
+  label,
+  className,
+  children,
+  ...rest
+}: ButtonProps) {
   return (
     <button className={`${classes.btn} ${className || ''}`} {...rest}>
       <span dangerouslySetInnerHTML={{ __html: svg }}></span>
       <span className="visually-hidden">{label}</span>
+      {children}
     </button>
   )
 }
