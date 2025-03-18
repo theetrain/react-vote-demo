@@ -7,7 +7,6 @@ import addIcon from '../assets/add.svg?raw'
 import { useVoteActions } from '../hooks/useVoteActions'
 
 import type { VoteGroup } from '../types'
-import { useState } from 'react'
 
 type Actions = {
   addVote: ReturnType<typeof useVoteActions>['addVote']
