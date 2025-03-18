@@ -20,11 +20,8 @@ interface VoteGroupProps {
 }
 
 export function VoteGroup({ group, actions }: VoteGroupProps) {
-  const [votes, setVotes] = useState(group.votes)
-
   function addVote() {
-    const votes = actions.addVote(group.id)
-    setVotes(votes)
+    actions.addVote(group.id)
   }
 
   if (!group.votes) {
@@ -44,7 +41,7 @@ export function VoteGroup({ group, actions }: VoteGroupProps) {
           />
         }
       >
-        {votes.map(({ id: voteId, voteState }) => (
+        {group.votes.map(({ id: voteId, voteState }) => (
           <UpVote
             key={voteId}
             voteId={voteId}

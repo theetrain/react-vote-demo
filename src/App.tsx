@@ -16,7 +16,7 @@ function App() {
         Add votes to a vote group, and then click on a vote to toggle an upvote.
       </p>
       {votesMap.map((group) => (
-        <div key={`${group.id}-${JSON.stringify(group.votes)}`}>
+        <div key={group.id}>
           <h2>{group.label}</h2>
           <VoteGroup group={group} actions={{ addVote, toggleVote }} />
         </div>

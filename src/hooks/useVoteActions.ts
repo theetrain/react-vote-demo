@@ -30,7 +30,7 @@ export const useVoteActions = () => {
     const id = crypto.randomUUID()
 
     const newVotesMap: VoteGroup[] = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) ?? '{}'
+      localStorage.getItem(STORAGE_KEY) ?? '[]'
     )
     const groupIndex = newVotesMap.findIndex((group) => group.id === groupId)
 
@@ -41,7 +41,7 @@ export const useVoteActions = () => {
     newVotesMap[groupIndex] = { ...newVotesMap[groupIndex], votes: newVotes }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newVotesMap))
-    return newVotes
+    setVotesMap(newVotesMap)
   }, [])
 
   const toggleVote = useCallback(
@@ -50,7 +50,7 @@ export const useVoteActions = () => {
       { id, voteState }: VoteGroup['votes'][number]
     ) => {
       const newVotesMap: VoteGroup[] = JSON.parse(
-        localStorage.getItem(STORAGE_KEY) ?? '{}'
+        localStorage.getItem(STORAGE_KEY) ?? '[]'
       )
 
       const groupIndex = newVotesMap.findIndex((group) => group.id === groupId)
@@ -68,8 +68,8 @@ export const useVoteActions = () => {
   )
 
   const clearVotes = useCallback(() => {
-    setVotesMap(initialVoteGroups)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(initialVoteGroups))
+    setVotesMap(initialVoteGroups)
   }, [])
 
   return { votesMap, addVote, toggleVote, clearVotes }
