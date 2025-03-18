@@ -10,8 +10,8 @@ describe('UpVote', () => {
     const user = userEvent.setup()
 
     const toggleVote: ReturnType<typeof useVoteActions>['toggleVote'] = (
-      groupId,
-      { id, voteState }
+      _,
+      { id: __, voteState }
     ) => {
       return voteState === 0 ? 1 : 0
     }

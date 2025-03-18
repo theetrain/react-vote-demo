@@ -1,10 +1,12 @@
-import { scan } from 'react-scan'
 import { VoteGroup } from './components/VoteGroup'
 import { useVoteActions } from './hooks/useVoteActions'
 
-scan({ enabled: import.meta.env.DEV })
-
 function App() {
+  if (import.meta.env.DEV) {
+    import('react-scan').then((mod) => {
+      mod.scan({ enabled: true })
+    })
+  }
   const { votesMap, clearVotes, addVote, toggleVote } = useVoteActions()
 
   return (

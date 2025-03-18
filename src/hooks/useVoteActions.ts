@@ -20,9 +20,9 @@ export const useVoteActions = () => {
     const votes = localStorage.getItem(STORAGE_KEY)
     if (votes) {
       setVotesMap(JSON.parse(votes))
-      return
     } else {
       setVotesMap(initialVoteGroups)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialVoteGroups))
     }
   }, [])
 
